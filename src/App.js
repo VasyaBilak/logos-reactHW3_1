@@ -1,23 +1,28 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import UsersComponent from './components/UsersComponent/UsersComponent';
 
-function App() {
+const App = () => {
+  const [ users, setUsers ] = useState([]);
+
+  useEffect(() => {
+      getUsers();
+  }, [])
+
+  const getUsers = async () => {
+      try {
+          let response = await fetch('https://jsonplaceholder.typicode.com/users');
+
+          let data = await response.json();
+          setUsers(data);
+      } catch {}
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app'>
+      <div style={{display: 'flex', justifyContent: 'space-around', width: '100%'}}>
+        <UsersComponent  users={users}/>
+      </div>
     </div>
   );
 }
